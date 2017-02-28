@@ -1,5 +1,13 @@
 requires python3.4 or higher.
 
+requires the following variables for login:
+
+- `AZURE_USERNAME`
+
+- `AZURE_PASSWORD`
+
+- `AZURE_SUBSCRIPTION`
+
 install:
 
 - `sudo apt-get install python3-pip libyaml-dev`
@@ -16,6 +24,8 @@ install:
 
 
 simple usage:
+
+- `azc login`
 
 - `azc new test-box --gigs 1023`
 
