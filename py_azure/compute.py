@@ -241,7 +241,9 @@ def ssh(
         key: 'speficy ssh key' = None,
         batch_mode: 'operate like there are many instances, even if only one' = False,
         prefixed: 'when running against a single host, should streaming output be prefixed with name and ip' = False,
-        error_message: 'error message to print for a failed host, something like: {id} {name} {ip} {ipv4_private} failed' = ''):
+        error_message: 'error message to print for a failed host, something like: {id} {name} {ip} {ipv4_private} failed' = '',
+        first_n=None,
+        last_n=None):
     # tty means that when you ^C to exit, the remote processes are killed. this is usually what you want, ie no lingering `tail -f` instances.
     # no_tty is the opposite, which is good for backgrounding processes, for example: `ec2 ssh $host -nyc 'bash cmd.sh </dev/null &>cmd.log &'
     # TODO backgrounding appears to succeed, but ec2 ssh never exits, when targeting more than 1 host?
@@ -255,6 +257,10 @@ def ssh(
         assert x, 'didnt find any ips'
         return x
     _ips = f()
+    if first_n:
+        _ips = _ips[:int(first_n)]
+    elif last_n:
+        _ips = _ips[-int(last_n):]
     if os.path.exists(cmd):
         with open(cmd) as f:
             cmd = f.read()
